@@ -14,10 +14,12 @@ def get_token(API_key, API_secret):
 
     return response.json()['access_token']
 
+
 def get_request(access_token, BASE_url):
     headers = {'Authorization': 'Bearer {token}'.format(token=access_token)}
     response = requests.get(BASE_url, headers=headers)
     return response
+
 
 def convert_to_json(response):
     return response.json()
@@ -26,10 +28,11 @@ def convert_to_json(response):
 def parse_animals(animals):
     return
 
-# duo comment
+
 # Function goes through list of search paramaters to get appropriate animal
 def search_values(list_of_values):
-    return    
+    return
+
 
 def give_location():
     return
@@ -41,7 +44,8 @@ def valid_input(user_response, valid_types_list):
         if (user_response == valid_type):
             return True
     return False
-    
+
+
 def print_header(title):
     print(f'\n{title}')
     print('-' * len(title))
@@ -52,7 +56,7 @@ def menu(menu_list):
     print_header('Menu')
     for index, name in enumerate(menu_list):
         print(f'({index}) {name}')
-    
+
 
 # Ensures integer input
 def handle_option(option):
@@ -64,29 +68,29 @@ def handle_option(option):
 
 def build_url(dict_inputs):
     url = ""
-    
     return
-    
+
+
 # Function will handle user input prompts and structure stuff
 def user_input():
     dict_inputs = {}
-    
+
     # Request animal_type
     menu(ANIMAL_TYPES_LIST)
-    option = handle_option(input('Enter your option: '))   
-    
+    option = handle_option(input('Animal preference: '))
+
     while(not valid_input(option, range(0, len(ANIMAL_TYPES_LIST)))):
         menu(ANIMAL_TYPES_LIST)
-        option = handle_option(input('What kind of animal are you looking to adopt:'))
-    
+        option = handle_option(input('Animal preference: '))
+
     menu(ANIMAL_GENDERS_LIST)
-    option = handle_option(input('Enter your option: '))
+    option = handle_option(input('Gender preference: '))
     while(not valid_input(option, range(0,len(ANIMAL_GENDERS_LIST)))):
         menu(ANIMAL_GENDERS_LIST)
         option = handle_option(input('Gender preference: '))
 
-    dict_inputs['animal_type'] = ANIMAL_TYPES_LIST[option]
-    dict_inputs['animal_gender'] = ANIMAL_GENDERS_LIST[option]
+    dict_inputs['type'] = ANIMAL_TYPES_LIST[option]
+    dict_inputs['gender'] = ANIMAL_GENDERS_LIST[option]
 
     # Request gender
     # age
@@ -98,13 +102,13 @@ def user_input():
     #    return
     #    add to search paramaters?
 
-    location = input('Enter your postal code: ')
-    distance = input('Search range(in miles): ')
+    dict_inputs['location'] = input('Enter your postal code: ')
+    dict_inputs['distance'] = input('Search range(in miles): ')
     response = get_request(token, 'https://api.petfinder.com/v2/animals' +
-                           '?location=' + location +
-                           '&distance=' + distance +
-                           '&type=' + dict_inputs['animal_type'] +
-                          '&gender=' + dict_inputs['animal_gender'])
+                           '?location=' + dict_inputs['location'] +
+                           '&distance=' + dict_inputs['distance'] +
+                           '&type=' + dict_inputs['type'] +
+                          '&gender=' + dict_inputs['gender'])
     return response
 
 
