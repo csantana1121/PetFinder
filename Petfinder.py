@@ -79,6 +79,8 @@ def user_input():
         menu(ANIMAL_TYPES_LIST)
         option = handle_option(input('What kind of animal are you looking to adopt:'))
     
+    menu(ANIMAL_GENDERS_LIST)
+    option = handle_option(input('Enter your option: '))
     while(not valid_input(option, range(0,len(ANIMAL_GENDERS_LIST)))):
         menu(ANIMAL_GENDERS_LIST)
         option = handle_option(input('Gender preference: '))
@@ -101,7 +103,8 @@ def user_input():
     response = get_request(token, 'https://api.petfinder.com/v2/animals' +
                            '?location=' + location +
                            '&distance=' + distance +
-                           '&type=' + dict_inputs['animal_type'])
+                           '&type=' + dict_inputs['animal_type'] +
+                          '&gender=' + dict_inputs['animal_gender'])
     return response
 
 
