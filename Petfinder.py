@@ -4,8 +4,8 @@ import requests
 ANIMAL_TYPES_LIST = [None, 'Dog', 'Cat', 'Rabbit', 'Small & Furry', 'Horse',
                      'Bird', 'Scales, Fins & Other', 'Barnyard']
 ANIMAL_GENDERS_LIST = [None, 'Male', 'Female']
-ANIMAL_AGE_LIST = [None, 'Young', 'Adult']
-
+ANIMAL_AGE_LIST = [None, 'Baby','Young', 'Adult', 'Senior']
+ANIMAL_SIZE_LIST = [None, 'Small', 'Medium', 'Large', 'Xlarge']
 
 def get_token(API_key, API_secret):
     response = requests.post(AUTH_URL, {
@@ -84,16 +84,21 @@ def user_input():
     while(not valid_input(option, range(0, len(ANIMAL_TYPES_LIST)))):
         menu(ANIMAL_TYPES_LIST)
         option = handle_option(input('Animal preference: '))
-
+    dict_inputs['type'] = ANIMAL_TYPES_LIST[option]
+    
     menu(ANIMAL_GENDERS_LIST)
     option = handle_option(input('Gender preference: '))
     while(not valid_input(option, range(0, len(ANIMAL_GENDERS_LIST)))):
         menu(ANIMAL_GENDERS_LIST)
         option = handle_option(input('Gender preference: '))
-
-    dict_inputs['type'] = ANIMAL_TYPES_LIST[option]
     dict_inputs['gender'] = ANIMAL_GENDERS_LIST[option]
-
+    
+    menu(ANIMAL_AGE_LIST)
+    option = handle_option(input('Age preference: '))
+    while(not valid_input(option, range(0, len(ANIMAL_AGE_LIST)))):
+        menu(ANIMAL_AGE_LIST)
+        option = handle_option(input('Age preference: '))
+    dict_inputs['age'] = ANIMAL_AGE_LIST[option]
     # Request gender
     # age
     # size
@@ -110,7 +115,8 @@ def user_input():
                            '?location=' + dict_inputs['location'] +
                            '&distance=' + dict_inputs['distance'] +
                            '&type=' + dict_inputs['type'] +
-                           '&gender=' + dict_inputs['gender'])
+                           '&gender=' + dict_inputs['gender'] +
+                           '&age=' + dict_inputs['age'])
     return response
 
 
