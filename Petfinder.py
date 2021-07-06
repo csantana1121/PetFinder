@@ -4,8 +4,9 @@ import requests
 ANIMAL_TYPES_LIST = [None, 'Dog', 'Cat', 'Rabbit', 'Small & Furry', 'Horse',
                      'Bird', 'Scales, Fins & Other', 'Barnyard']
 ANIMAL_GENDERS_LIST = [None, 'Male', 'Female']
-ANIMAL_AGE_LIST = [None, 'Baby','Young', 'Adult', 'Senior']
+ANIMAL_AGE_LIST = [None, 'Baby', 'Young', 'Adult', 'Senior']
 ANIMAL_SIZE_LIST = [None, 'Small', 'Medium', 'Large', 'Xlarge']
+
 
 def get_token(API_key, API_secret):
     response = requests.post(AUTH_URL, {
@@ -85,14 +86,14 @@ def user_input():
         menu(ANIMAL_TYPES_LIST)
         option = handle_option(input('Animal preference: '))
     dict_inputs['type'] = ANIMAL_TYPES_LIST[option]
-    
+
     menu(ANIMAL_GENDERS_LIST)
     option = handle_option(input('Gender preference: '))
     while(not valid_input(option, range(0, len(ANIMAL_GENDERS_LIST)))):
         menu(ANIMAL_GENDERS_LIST)
         option = handle_option(input('Gender preference: '))
     dict_inputs['gender'] = ANIMAL_GENDERS_LIST[option]
-    
+
     menu(ANIMAL_AGE_LIST)
     option = handle_option(input('Age preference: '))
     while(not valid_input(option, range(0, len(ANIMAL_AGE_LIST)))):
