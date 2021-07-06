@@ -69,9 +69,20 @@ def handle_option(option):
         return -1
 
 
+# Send a get request to API with the filters the user requests
 def build_url(dict_inputs):
-    url = ""
-    return
+    Get_Animals = 'https://api.petfinder.com/v2/animals'
+    url = "https://api.petfinder.com/v2/animals?"
+    No_preference = True
+    for key, value in dict_inputs.items():
+        if value != None:
+            No_preference = False
+            url += f'{key}={value}&'
+    url = url[:-1]
+    if No_preference:
+        return Get_Animals
+    else:
+        return url
 
 
 # Function will handle user input prompts and structure stuff
@@ -112,13 +123,7 @@ def user_input():
 
     dict_inputs['location'] = input('Enter your postal code: ')
     dict_inputs['distance'] = input('Search range(in miles): ')
-    response = get_request(token, 'https://api.petfinder.com/v2/animals' +
-                           '?location=' + dict_inputs['location'] +
-                           '&distance=' + dict_inputs['distance'] +
-                           '&type=' + dict_inputs['type'] +
-                           '&gender=' + dict_inputs['gender'] +
-                           '&age=' + dict_inputs['age'])
-    return response
+    return dict_inputs
 
 
 API_key = 'xeEk5W9rJpZV68xsBdvtqf8pkQIg9m2a1dei0JajyGxir8Nh4o'
@@ -136,5 +141,6 @@ token = get_token(API_key, API_secret)
 # print(convert_to_json(response))
 
 output = user_input()
-
-print(convert_to_json(output))
+url = build_url(output)
+response = get_request(token, url)
+print(convert_to_json(response))
