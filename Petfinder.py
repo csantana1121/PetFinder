@@ -1,16 +1,18 @@
 import requests
 
 # CONSANTS
-ANIMAL_TYPES_LIST = [None, 'Dog','Cat','Rabbit','Small & Furry','Horse','Bird','Scales, Fins & Other','Barnyard']
-ANIMAL_GENDERS_LIST = [None, 'Male','Female']
-ANIMAL_AGE_LIST = [None, 'Young','Adult']
+ANIMAL_TYPES_LIST = [None, 'Dog', 'Cat', 'Rabbit', 'Small & Furry', 'Horse',
+                     'Bird', 'Scales, Fins & Other', 'Barnyard']
+ANIMAL_GENDERS_LIST = [None, 'Male', 'Female']
+ANIMAL_AGE_LIST = [None, 'Young', 'Adult']
+
 
 def get_token(API_key, API_secret):
     response = requests.post(AUTH_URL, {
         'grant_type': 'client_credentials',
         'client_id': API_key,
         'client_secret': API_secret,
-    }) # Access token request
+    })  # Access token request
 
     return response.json()['access_token']
 
@@ -62,9 +64,9 @@ def menu(menu_list):
 def handle_option(option):
     try:
         return int(option)
-    except:
+    except ValueError:
         return -1
-    
+
 
 def build_url(dict_inputs):
     url = ""
@@ -97,8 +99,8 @@ def user_input():
     # size
 
     # Location Function
-    #location = give_location()
-    #if (location != None):
+    # location = give_location()
+    # if (location != None):
     #    return
     #    add to search paramaters?
 
@@ -108,7 +110,7 @@ def user_input():
                            '?location=' + dict_inputs['location'] +
                            '&distance=' + dict_inputs['distance'] +
                            '&type=' + dict_inputs['type'] +
-                          '&gender=' + dict_inputs['gender'])
+                           '&gender=' + dict_inputs['gender'])
     return response
 
 
