@@ -87,7 +87,7 @@ def user_input():
 
     menu(ANIMAL_GENDERS_LIST)
     option = handle_option(input('Gender preference: '))
-    while(not valid_input(option, range(0,len(ANIMAL_GENDERS_LIST)))):
+    while(not valid_input(option, range(0, len(ANIMAL_GENDERS_LIST)))):
         menu(ANIMAL_GENDERS_LIST)
         option = handle_option(input('Gender preference: '))
 
@@ -125,8 +125,8 @@ Get_Animals = 'https://api.petfinder.com/v2/animals'
 
 token = get_token(API_key, API_secret)
 
-#response = get_request(token, "https://api.petfinder.com/v2/types")
-#print(convert_to_json(response))
+# response = get_request(token, "https://api.petfinder.com/v2/types")
+# print(convert_to_json(response))
 
 output = user_input()
 
