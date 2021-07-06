@@ -75,7 +75,7 @@ def build_url(dict_inputs):
     url = "https://api.petfinder.com/v2/animals?"
     No_preference = True
     for key, value in dict_inputs.items():
-        if value != None:
+        if value is not None:
             No_preference = False
             url += f'{key}={value}&'
     url = url[:-1]
