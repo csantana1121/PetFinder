@@ -111,6 +111,13 @@ def user_input():
         menu(ANIMAL_AGE_LIST)
         option = handle_option(input('Age preference: '))
     dict_inputs['age'] = ANIMAL_AGE_LIST[option]
+
+    menu(ANIMAL_SIZE_LIST)
+    option = handle_option(input('Size preference: '))
+    while(not valid_input(option, range(0, len(ANIMAL_SIZE_LIST)))):
+        menu(ANIMAL_SIZE_LIST)
+        option = handle_option(input('Size preference: '))
+    dict_inputs['size'] = ANIMAL_SIZE_LIST[option]
     # Request gender
     # age
     # size
