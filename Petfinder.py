@@ -12,7 +12,7 @@ def convert_to_json(response):
 def parse_animals(animals):
     return
 
-
+# duo comment
 # Function goes through list of search paramaters to get appropriate animal
 def search_values(list_of_values):
     return    
