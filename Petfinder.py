@@ -3,7 +3,7 @@ import pandas as pd
 
 # CONSANTS
 ANIMAL_TYPES_LIST = [None, 'Dog', 'Cat', 'Rabbit', 'Small & Furry', 'Horse',
-                     'Bird', 'Scales', 'Fins & Other', 'Barnyard']
+                     'Bird', 'Scales, Fins & Other', 'Barnyard']
 ANIMAL_GENDERS_LIST = [None, 'Male', 'Female']
 ANIMAL_AGE_LIST = [None, 'Baby', 'Young', 'Adult', 'Senior']
 ANIMAL_SIZE_LIST = [None, 'Small', 'Medium', 'Large', 'Xlarge']
