@@ -1,6 +1,12 @@
 import requests
 import pandas as pd
 
+
+#Location check using google api
+#error checks
+#handle if returns empty animals
+
+
 # CONSANTS
 ANIMAL_TYPES_LIST = [None, 'Dog', 'Cat', 'Rabbit', 'Small & Furry', 'Horse',
                      'Bird', 'Scales, Fins & Other', 'Barnyard']
@@ -36,6 +42,8 @@ def parse_animals(animals_json):
     animalsdf = pd.DataFrame()
     animals_dict = {}
     count = 0
+    
+    #check if it returns an empty values
     
     for animal in animals_json["animals"]:
         #Construct Address
