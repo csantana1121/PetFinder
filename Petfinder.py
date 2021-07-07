@@ -37,6 +37,9 @@ def parse_animals(animals_json):
     count = 0
     
     for animal in animals_json["animals"]:
+        #Construct Address
+        
+        # Add most general information
         animals_dict[count] = {
             'id': animal["id"],
             'type': animal["type"],
@@ -48,22 +51,26 @@ def parse_animals(animals_json):
             'coat': animal["coat"],
             'name': animal["name"],
             'description': animal["description"],
-            # Must consider handling if there are no videos or photos
-            # 'photos(med)': animal["photos"][0]["medium"],   # For now only get 1 photo
-            # 'videos': animal["videos"][0]["embed"],   # For now only get 1 video
             'status': animal["status"],
             'published_at': animal["published_at"],
             'contact(email)': animal["contact"]["email"],
             'contact(phone)': animal["contact"]["phone"],
-            'contact(address)': (animal["contact"]["address"]["address1"])    
+            'contact(address)': animal["contact"]["address"]["address1"],
+            'contact(address)(country)': animal["contact"]["address"]["country"]   
         }
+        
+        # Add photos
+        
+        # 'photos(med)': animal["photos"][0]["medium"],   # For now only get 1 photo
+        
+        # 'videos': animal["videos"][0]["embed"],   # For now only get 1 video
                                  
             # there is more to address parsing,
         count += 1
     
     animalsdf = pd.DataFrame.from_dict(animals_dict,
                                        orient='index')
-    print(animalsdf.head())
+    print(animalsdf)
     return animalsdf
 
 
