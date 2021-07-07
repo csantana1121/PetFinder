@@ -4,7 +4,8 @@ import requests
 ANIMAL_TYPES_LIST = [None, 'Dog', 'Cat', 'Rabbit', 'Small & Furry', 'Horse',
                      'Bird', 'Scales, Fins & Other', 'Barnyard']
 ANIMAL_GENDERS_LIST = [None, 'Male', 'Female']
-ANIMAL_AGE_LIST = [None, 'Young', 'Adult']
+ANIMAL_AGE_LIST = [None, 'Baby', 'Young', 'Adult', 'Senior']
+ANIMAL_SIZE_LIST = [None, 'Small', 'Medium', 'Large', 'Xlarge']
 
 
 def get_token(API_key, API_secret):
@@ -68,9 +69,20 @@ def handle_option(option):
         return -1
 
 
+# Send a get request to API with the filters the user requests
 def build_url(dict_inputs):
-    url = ""
-    return
+    Get_Animals = 'https://api.petfinder.com/v2/animals'
+    url = "https://api.petfinder.com/v2/animals?"
+    No_preference = True
+    for key, value in dict_inputs.items():
+        if value is not None:
+            No_preference = False
+            url += f'{key}={value}&'
+    url = url[:-1]
+    if No_preference:
+        return Get_Animals
+    else:
+        return url
 
 
 # Function will handle user input prompts and structure stuff
@@ -84,16 +96,28 @@ def user_input():
     while(not valid_input(option, range(0, len(ANIMAL_TYPES_LIST)))):
         menu(ANIMAL_TYPES_LIST)
         option = handle_option(input('Animal preference: '))
+    dict_inputs['type'] = ANIMAL_TYPES_LIST[option]
 
     menu(ANIMAL_GENDERS_LIST)
     option = handle_option(input('Gender preference: '))
     while(not valid_input(option, range(0, len(ANIMAL_GENDERS_LIST)))):
         menu(ANIMAL_GENDERS_LIST)
         option = handle_option(input('Gender preference: '))
-
-    dict_inputs['type'] = ANIMAL_TYPES_LIST[option]
     dict_inputs['gender'] = ANIMAL_GENDERS_LIST[option]
 
+    menu(ANIMAL_AGE_LIST)
+    option = handle_option(input('Age preference: '))
+    while(not valid_input(option, range(0, len(ANIMAL_AGE_LIST)))):
+        menu(ANIMAL_AGE_LIST)
+        option = handle_option(input('Age preference: '))
+    dict_inputs['age'] = ANIMAL_AGE_LIST[option]
+
+    menu(ANIMAL_SIZE_LIST)
+    option = handle_option(input('Size preference: '))
+    while(not valid_input(option, range(0, len(ANIMAL_SIZE_LIST)))):
+        menu(ANIMAL_SIZE_LIST)
+        option = handle_option(input('Size preference: '))
+    dict_inputs['size'] = ANIMAL_SIZE_LIST[option]
     # Request gender
     # age
     # size
@@ -106,12 +130,7 @@ def user_input():
 
     dict_inputs['location'] = input('Enter your postal code: ')
     dict_inputs['distance'] = input('Search range(in miles): ')
-    response = get_request(token, 'https://api.petfinder.com/v2/animals' +
-                           '?location=' + dict_inputs['location'] +
-                           '&distance=' + dict_inputs['distance'] +
-                           '&type=' + dict_inputs['type'] +
-                           '&gender=' + dict_inputs['gender'])
-    return response
+    return dict_inputs
 
 
 API_key = 'xeEk5W9rJpZV68xsBdvtqf8pkQIg9m2a1dei0JajyGxir8Nh4o'
@@ -129,5 +148,6 @@ token = get_token(API_key, API_secret)
 # print(convert_to_json(response))
 
 output = user_input()
-
-print(convert_to_json(output))
+url = build_url(output)
+response = get_request(token, url)
+print(convert_to_json(response))
