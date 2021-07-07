@@ -1,9 +1,9 @@
- <iframe
+<iframe
     id="igraph"
     scrolling="no"
     style="border:none;"
     seamless="seamless"
-    src="https://github.com/csantana1121/PetFinder/blob/data-handling/genderChart.html"
+    src="https://csantana1121.github.io/PetFinder/genderChart.html"
     height="525"
     width="100%">
  </iframe>
