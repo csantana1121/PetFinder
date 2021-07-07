@@ -6,7 +6,7 @@ ANIMAL_TYPES_LIST = [None, 'Dog', 'Cat', 'Rabbit', 'Small & Furry', 'Horse',
 ANIMAL_GENDERS_LIST = [None, 'Male', 'Female']
 ANIMAL_AGE_LIST = [None, 'Baby', 'Young', 'Adult', 'Senior']
 ANIMAL_SIZE_LIST = [None, 'Small', 'Medium', 'Large', 'Xlarge']
-LOCATION_OPTIONS = ['Yes', 'No']
+LOCATION_OPTIONS = ['No', 'Yes']
 
 def get_token(API_key, API_secret):
     response = requests.post(AUTH_URL, {
@@ -137,7 +137,7 @@ def user_input():
     while(not valid_input(option, range(0, len(LOCATION_OPTIONS)))):
         menu(LOCATION_OPTIONS)
         option = handle_option(input('Choice: '))
-    if option == 0:
+    if option == 1:
         dict_inputs['location'] = input('Enter your postal code: ')
         print_header('Edit Search Range? (Default 100 miles)')
         menu(LOCATION_OPTIONS)
@@ -145,14 +145,13 @@ def user_input():
         while(not valid_input(option, range(0, len(LOCATION_OPTIONS)))):
             menu(LOCATION_OPTIONS)
             option = handle_option(input('Choice: '))
-        if option == 0:
+        if option == 1:
             print_header('Search range(in miles): ')
             option = handle_option(input('Range(in miles): '))
             while(not valid_input(option, range(1,501))):
                 option = handle_option(input('Range(in miles): '))
             dict_inputs['distance'] = option
-    elif option == 1:
-        print('No')
+
     return dict_inputs
 
 
