@@ -8,6 +8,7 @@ ANIMAL_AGE_LIST = [None, 'Baby', 'Young', 'Adult', 'Senior']
 ANIMAL_SIZE_LIST = [None, 'Small', 'Medium', 'Large', 'Xlarge']
 LOCATION_OPTIONS = ['No', 'Yes']
 
+
 def get_token(API_key, API_secret):
     response = requests.post(AUTH_URL, {
         'grant_type': 'client_credentials',
@@ -148,7 +149,7 @@ def user_input():
         if option == 1:
             print_header('Search range(in miles): ')
             option = handle_option(input('Range(in miles): '))
-            while(not valid_input(option, range(1,501))):
+            while(not valid_input(option, range(1, 501))):
                 option = handle_option(input('Range(in miles): '))
             dict_inputs['distance'] = option
 
