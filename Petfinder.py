@@ -9,7 +9,7 @@ import pandas as pd
 
 # CONSANTS
 ANIMAL_TYPES_LIST = [None, 'Dog', 'Cat', 'Rabbit', 'Small & Furry', 'Horse',
-                     'Bird', 'Scales, Fins & Other', 'Barnyard']
+                     'Bird', 'Scales', 'Fins & Other', 'Barnyard']
 ANIMAL_GENDERS_LIST = [None, 'Male', 'Female']
 ANIMAL_AGE_LIST = [None, 'Baby', 'Young', 'Adult', 'Senior']
 ANIMAL_SIZE_LIST = [None, 'Small', 'Medium', 'Large', 'Xlarge']
@@ -230,4 +230,4 @@ animals_json = parse_animals(convert_to_json(response))
 import plotly.express as px
 
 fig = px.bar(animals_json, x='type')
-fig.write_html('genderChart.html') # export to HTML file
+# fig.write_html('genderChart.html') # export to HTML file
