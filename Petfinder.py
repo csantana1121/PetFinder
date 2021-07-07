@@ -6,6 +6,7 @@ ANIMAL_TYPES_LIST = [None, 'Dog', 'Cat', 'Rabbit', 'Small & Furry', 'Horse',
 ANIMAL_GENDERS_LIST = [None, 'Male', 'Female']
 ANIMAL_AGE_LIST = [None, 'Baby', 'Young', 'Adult', 'Senior']
 ANIMAL_SIZE_LIST = [None, 'Small', 'Medium', 'Large', 'Xlarge']
+LOCATION_OPTIONS = ['No', 'Yes']
 
 
 def get_token(API_key, API_secret):
@@ -90,6 +91,7 @@ def user_input():
     dict_inputs = {}
 
     # Request animal_type
+    print_header('Available Animals for adoption')
     menu(ANIMAL_TYPES_LIST)
     option = handle_option(input('Animal preference: '))
 
@@ -98,6 +100,7 @@ def user_input():
         option = handle_option(input('Animal preference: '))
     dict_inputs['type'] = ANIMAL_TYPES_LIST[option]
 
+    print_header('Gender options')
     menu(ANIMAL_GENDERS_LIST)
     option = handle_option(input('Gender preference: '))
     while(not valid_input(option, range(0, len(ANIMAL_GENDERS_LIST)))):
@@ -105,6 +108,7 @@ def user_input():
         option = handle_option(input('Gender preference: '))
     dict_inputs['gender'] = ANIMAL_GENDERS_LIST[option]
 
+    print_header('Age Ranges')
     menu(ANIMAL_AGE_LIST)
     option = handle_option(input('Age preference: '))
     while(not valid_input(option, range(0, len(ANIMAL_AGE_LIST)))):
@@ -112,6 +116,7 @@ def user_input():
         option = handle_option(input('Age preference: '))
     dict_inputs['age'] = ANIMAL_AGE_LIST[option]
 
+    print_header('Animal Size')
     menu(ANIMAL_SIZE_LIST)
     option = handle_option(input('Size preference: '))
     while(not valid_input(option, range(0, len(ANIMAL_SIZE_LIST)))):
@@ -127,9 +132,27 @@ def user_input():
     # if (location != None):
     #    return
     #    add to search paramaters?
+    print_header('Would you like to give a location')
+    menu(LOCATION_OPTIONS)
+    option = handle_option(input('Choice: '))
+    while(not valid_input(option, range(0, len(LOCATION_OPTIONS)))):
+        menu(LOCATION_OPTIONS)
+        option = handle_option(input('Choice: '))
+    if option == 1:
+        dict_inputs['location'] = input('Enter your postal code: ')
+        print_header('Edit Search Range? (Default 100 miles)')
+        menu(LOCATION_OPTIONS)
+        option = handle_option(input('Choice: '))
+        while(not valid_input(option, range(0, len(LOCATION_OPTIONS)))):
+            menu(LOCATION_OPTIONS)
+            option = handle_option(input('Choice: '))
+        if option == 1:
+            print_header('Search range(in miles): ')
+            option = handle_option(input('Range(in miles): '))
+            while(not valid_input(option, range(1, 501))):
+                option = handle_option(input('Range(in miles): '))
+            dict_inputs['distance'] = option
 
-    dict_inputs['location'] = input('Enter your postal code: ')
-    dict_inputs['distance'] = input('Search range(in miles): ')
     return dict_inputs
 
 
