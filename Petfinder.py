@@ -1,4 +1,5 @@
 import requests
+import pandas as pd
 
 # CONSANTS
 ANIMAL_TYPES_LIST = [None, 'Dog', 'Cat', 'Rabbit', 'Small & Furry', 'Horse',
@@ -28,9 +29,42 @@ def convert_to_json(response):
     return response.json()
 
 
-def parse_animals(animals):
-    # made new branch
-    return
+# Parses through the animals json to get desired information
+# Return dataframe 
+def parse_animals(animals_json):
+    animalsdf = pd.DataFrame()
+    animals_dict = {}
+    count = 0
+    
+    for animal in animals_json["animals"]:
+        animals_dict[count] = {
+            'id': animal["id"],
+            'type': animal["type"],
+            'breed(primary)': animal["breeds"]["primary"],
+            'color(primary)': animal["colors"]["primary"],
+            'age': animal["age"],
+            'gender': animal["gender"],
+            'size': animal["size"],
+            'coat': animal["coat"],
+            'name': animal["name"],
+            'description': animal["description"],
+            # Must consider handling if there are no videos or photos
+            # 'photos(med)': animal["photos"][0]["medium"],   # For now only get 1 photo
+            # 'videos': animal["videos"][0]["embed"],   # For now only get 1 video
+            'status': animal["status"],
+            'published_at': animal["published_at"],
+            'contact(email)': animal["contact"]["email"],
+            'contact(phone)': animal["contact"]["phone"],
+            'contact(address)': (animal["contact"]["address"]["address1"])    
+        }
+                                 
+            # there is more to address parsing,
+        count += 1
+    
+    animalsdf = pd.DataFrame.from_dict(animals_dict,
+                                       orient='index')
+    print(animalsdf.head())
+    return animalsdf
 
 
 # Function goes through list of search paramaters to get appropriate animal
@@ -151,4 +185,5 @@ token = get_token(API_key, API_secret)
 output = user_input()
 url = build_url(output)
 response = get_request(token, url)
-print(convert_to_json(response))
+#print(convert_to_json(response))
+parse_animals(convert_to_json(response))
