@@ -8,8 +8,8 @@ import pandas as pd
 
 
 # CONSANTS
-ANIMAL_TYPES_LIST = [None, 'Dog', 'Cat', 'Rabbit', 'Small & Furry', 'Horse',
-                     'Bird', 'Scales, Fins & Other', 'Barnyard']
+ANIMAL_TYPES_LIST = [None, 'Dog', 'Cat', 'Rabbit', 'Small-Furry', 'Horse',
+                     'Bird', 'Scales-Fins-Other', 'Barnyard']
 ANIMAL_GENDERS_LIST = [None, 'Male', 'Female']
 ANIMAL_AGE_LIST = [None, 'Baby', 'Young', 'Adult', 'Senior']
 ANIMAL_SIZE_LIST = [None, 'Small', 'Medium', 'Large', 'Xlarge']
@@ -130,6 +130,7 @@ def build_url(dict_inputs):
             No_preference = False
             url += f'{key}={value}&'
     url = url[:-1]
+    print(url)
     if No_preference:
         return Get_Animals
     else:
