@@ -3,7 +3,7 @@
     scrolling="no"
     style="border:none;"
     seamless="seamless"
-    src="https://csantana1121.github.io/PetFinder/genderChart.html"
+    src="https://raw.githubusercontent.com/csantana1121/PetFinder/master/genderChart.html"
     height="525"
     width="100%">
  </iframe>
