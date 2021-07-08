@@ -18,6 +18,7 @@ LOCATION_OPTIONS = ['No', 'Yes']
 API_key = 'xeEk5W9rJpZV68xsBdvtqf8pkQIg9m2a1dei0JajyGxir8Nh4o'
 API_secret = '3jw6ujpIJ2BJni6XQNCUpBxvjdSFxm88FvFbhfZ2'
 
+
 def get_token(API_key, API_secret):
     response = requests.post(AUTH_URL, {
         'grant_type': 'client_credentials',
@@ -202,14 +203,16 @@ def user_input():
         option = handle_option(input('Choice: '))
     if option == 1:
         test = True
+        error = ('https://www.petfinder.com/developers/v2/docs/errors/' +
+                 'ERR-00002/')
         option = input('Enter your postal code: ')
         while(test):
-            response = get_request(get_token(API_key, API_secret), 
-                                 'https://api.petfinder.com/v2/animals'
-                                 + '?location=' + option)
+            response = get_request(get_token(API_key, API_secret),
+                                   'https://api.petfinder.com/v2/animals'
+                                   + '?location=' + option)
             code = convert_to_json(response)
             try:
-                if code['type'] != 'https://www.petfinder.com/developers/v2/docs/errors/ERR-00002/':
+                if code['type'] != error:
                     print(code['type'])
                     test = False
             except KeyError:
