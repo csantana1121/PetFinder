@@ -48,7 +48,7 @@ def parse_animals(animals_json):
 
     for animal in animals_json["animals"]:
         # Construct Address
-        
+    
         # Add most general information
         animals_dict[count] = {
             'id': animal["id"],
@@ -227,7 +227,7 @@ token = get_token(API_key, API_secret)
 output = user_input()
 url = build_url(output)
 response = get_request(token, url)
-#print(convert_to_json(response))
+# print(convert_to_json(response))
 animals_json = parse_animals(convert_to_json(response))
 
 
