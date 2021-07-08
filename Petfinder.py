@@ -225,16 +225,6 @@ def display_profile(dataSeries, paramList=None, formList=None):
     for i in range(0, len(paramList)):
         print(f'{paramList[i]}: {dataSeries.get(paramList[i])}', end=formList[i])
 
-# Takes Series and list with desired traits to display animal breed age size
-def display_brief_profile(dataSeries, paramList):
-    for i in range(0, len(paramList)):
-        print(paramList[i] + ":" + dataSeries.get(paramList[i]))
-
-#Takes series and displays animals information in neat format
-def display_full_profile(dataSeries):
-    for label, attribute in dataSeries.items():
-        print(f'{label}: {attribute}')
-
 # Gets dataframe with animals and prints out information 
 def display_selected_animals(animalsdf):
     for index, animal in animalsdf.iterrows():
