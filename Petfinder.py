@@ -230,7 +230,7 @@ def display_profile(dataSeries, paramList=None, labelList=None, formList=None):
     #    labelList = paramList
     #    for i in range(0, len(paramList)):
     #        labelList[i] = labelList[i] + ": "
-        
+    
     for i in range(0, len(paramList)):
         # print(f'{labelList[i]}', end='')
         # if labelList[i] is not None:
