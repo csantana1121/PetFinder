@@ -112,6 +112,13 @@ def print_header(title):
 def menu(menu_list):
     print_header('Menu')
     for index, name in enumerate(menu_list):
+        try:
+            lastindex = name.rfind('-')
+            if(lastindex > 0):
+                name = name[:lastindex] + ' & ' + name[lastindex+1:]
+                name = name.replace('-',', ')
+        except AttributeError:
+            pass
         print(f'({index}) {name}')
 
 
