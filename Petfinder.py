@@ -15,7 +15,8 @@ ANIMAL_GENDERS_LIST = [None, 'Male', 'Female']
 ANIMAL_AGE_LIST = [None, 'Baby', 'Young', 'Adult', 'Senior']
 ANIMAL_SIZE_LIST = [None, 'Small', 'Medium', 'Large', 'Xlarge']
 LOCATION_OPTIONS = ['No', 'Yes']
-
+API_key = 'xeEk5W9rJpZV68xsBdvtqf8pkQIg9m2a1dei0JajyGxir8Nh4o'
+API_secret = '3jw6ujpIJ2BJni6XQNCUpBxvjdSFxm88FvFbhfZ2'
 
 def get_token(API_key, API_secret):
     response = requests.post(AUTH_URL, {
@@ -116,7 +117,7 @@ def menu(menu_list):
             lastindex = name.rfind('-')
             if(lastindex > 0):
                 name = name[:lastindex] + ' & ' + name[lastindex+1:]
-                name = name.replace('-',', ')
+                name = name.replace('-', ', ')
         except AttributeError:
             pass
         print(f'({index}) {name}')
@@ -200,7 +201,19 @@ def user_input():
         menu(LOCATION_OPTIONS)
         option = handle_option(input('Choice: '))
     if option == 1:
-        dict_inputs['location'] = input('Enter your postal code: ')
+        test = True
+        option = input('Enter your postal code: ')
+        while(test):
+            response = get_request(get_token(API_key, API_secret), 
+                                 'https://api.petfinder.com/v2/animals'
+                                 + '?location=' + option)
+            code = convert_to_json(response)
+            if code['type'] != 'https://www.petfinder.com/developers/v2/docs/errors/ERR-00002/':
+                print(code[0]['type'])
+                test = False
+            option = input('Input valid address: ')
+            print(test)
+        dict_inputs['location'] = option
         print_header('Edit Search Range? (Default 100 miles)')
         menu(LOCATION_OPTIONS)
         option = handle_option(input('Choice: '))
@@ -218,8 +231,6 @@ def user_input():
 
 
 if __name__ == '__main__':
-    API_key = 'xeEk5W9rJpZV68xsBdvtqf8pkQIg9m2a1dei0JajyGxir8Nh4o'
-    API_secret = '3jw6ujpIJ2BJni6XQNCUpBxvjdSFxm88FvFbhfZ2'
 
     API_key2 = 'zJfcD6R6ADhwPimvTWthqhnv9zbA3JcHZCZwEToEUY7fq8BnsM'
     API_secret2 = 'RGkqeThwQVMg3eoVWJK3fuJkXVxX1TTVdLIyFeS3'
@@ -235,8 +246,8 @@ if __name__ == '__main__':
     output = user_input()
     url = build_url(output)
     response = get_request(token, url)
-    # print(convert_to_json(response))
-    animals_json = parse_animals(convert_to_json(response))
+    print(convert_to_json(response))
+    # animals_json = parse_animals(convert_to_json(response))
 
-    fig = px.bar(animals_json, x='type')
+    # fig = px.bar(animals_json, x='type')
     # fig.write_html('genderChart.html') # export to HTML file
