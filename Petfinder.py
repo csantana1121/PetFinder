@@ -29,7 +29,7 @@ def get_token(API_key, API_secret):
 
 
 def path_to_image_html(path):
-    return '<img src="'+ path + '" width="60" >'
+    return '<img src="' + path + '" width="60" >'
 
 
 def get_request(access_token, BASE_url):
@@ -77,7 +77,8 @@ def parse_animals(animals_json):
 
         # Add photos
         try:
-            animals_dict[count]['photos'] = animal["primary_photo_cropped"]["medium"]
+            animals_dict[count]['photos'] = (
+            animal["primary_photo_cropped"]["medium"])
             animals_dict[count]['video'] = animal['videos'][0]["embed"]
         except TypeError:
             animals_dict[count]['photos'] = None
@@ -264,9 +265,12 @@ if __name__ == '__main__':
     response = get_request(token, url)
     # print(convert_to_json(response))
     animals_json = parse_animals(convert_to_json(response))
-    
-    animals_json.to_html(escape=False, formatters=dict(photos=path_to_image_html))
-    HTML(animals_json.to_html(escape=False,formatters=dict(photos=path_to_image_html)))
-    animals_json.to_html('webpage.html',escape=False, formatters=dict(photos=path_to_image_html))
+
+    animals_json.to_html(escape=False,
+                         formatters=dict(photos=path_to_image_html))
+    HTML(animals_json.to_html(escape=False,
+                              formatters=dict(photos=path_to_image_html)))
+    animals_json.to_html('webpage.html', escape=False,
+                         formatters=dict(photos=path_to_image_html))
     # fig = px.bar(animals_json, x='type')
     # fig.write_html('genderChart.html') # export to HTML file
