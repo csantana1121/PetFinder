@@ -228,11 +228,25 @@ def display_profile(dataSeries, paramList=None, formList=None):
 # Gets dataframe with animals and prints out information 
 def display_selected_animals(animalsdf):
     for index, animal in animalsdf.iterrows():
-        print(f'Selection {index}')
+        print(f'({index+1}) Animal')
         display_profile(animal,
-                        ['name', 'type', 'gender', 'age'],
-                        [" | ", " | ", " |  "])
-
+                        paramList = ["name", "type", "age", "gender"],
+                        formList = [" | ", " | ", " |  "])
+        
+# Gets dataframe with animals that may be selected
+def user_select_animals(animalsdf):
+    option = len(animalsdf)
+    while( not (option == 0)):
+        print("Here is a selection of animals based on your criteria")
+        display_selected_animals(animalsdf)
+        print(f'(0) Exit selection')
+        option = handle_option(input("Select an animal"))
+        while(not valid_input(option, range(1,len(animalsdf)+1))):
+            option = handle_option(input("Select an animal"))
+        display_profile(animalsdf.iloc[option-1])
+        input("press enter to continue back")
+        
+        
 if __name__ == '__main__':
     API_key = 'xeEk5W9rJpZV68xsBdvtqf8pkQIg9m2a1dei0JajyGxir8Nh4o'
     API_secret = '3jw6ujpIJ2BJni6XQNCUpBxvjdSFxm88FvFbhfZ2'
@@ -258,4 +272,4 @@ if __name__ == '__main__':
     fig.show()
     # fig.write_html('genderChart.html') # export to HTML file
     
-    display_selected_animals(animalsdf)
+    user_select_animals(animalsdf)
