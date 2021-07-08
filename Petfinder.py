@@ -209,13 +209,23 @@ def user_input():
     return dict_inputs
 
 
+# Takes Series and list with desired traits to display animal breed age size
+def display_brief_profile(dataSeries, paramList):
+    for i in range(0, len(paramList)):
+        print(paramList[i] + ":" + dataSeries.get(paramList[i]))
+
+#Takes series and displays animals information in neat format
+def display_full_profile(dataSeries):
+    for label, attribute in dataSeries.items():
+        print(f'{label}: {attribute}')
+
 # Gets dataframe with animals and prints out information 
 def display_selected_animals(animalsdf):
     for index, animal in animalsdf.iterrows():
         print(f'Selection {index}')
-        for label, attribute in animal.items():
-            print(f'{label}: {attribute}')
-            
+        #display_full_profile(animal)    
+        display_brief_profile(animal,['name','type','gender','age'])    
+        
         print()
     print(animalsdf)
     
