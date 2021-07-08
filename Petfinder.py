@@ -1,10 +1,11 @@
 import requests
 import pandas as pd
+import plotly.express as px
 
 
-#Location check using google api
-#error checks
-#handle if returns empty animals
+# Location check using google api
+# error checks
+# handle if returns empty animals
 
 
 # CONSANTS
@@ -37,12 +38,12 @@ def convert_to_json(response):
 
 
 # Parses through the animals json to get desired information
-# Return dataframe 
+# Return dataframe
 def parse_animals(animals_json):
     animalsdf = pd.DataFrame()
     animals_dict = {}
     count = 0
-    
+
     #check if it returns an empty values
     
     for animal in animals_json["animals"]:
@@ -65,18 +66,19 @@ def parse_animals(animals_json):
             'contact(email)': animal["contact"]["email"],
             'contact(phone)': animal["contact"]["phone"],
             'contact(address)': animal["contact"]["address"]["address1"],
-            'contact(address)(country)': animal["contact"]["address"]["country"]   
+            'contact(address)(country)':
+            animal["contact"]["address"]["country"]
         }
-        
+
         # Add photos
-        
+
         # 'photos(med)': animal["photos"][0]["medium"],   # For now only get 1 photo
-        
+
         # 'videos': animal["videos"][0]["embed"],   # For now only get 1 video
-                                 
+
             # there is more to address parsing,
         count += 1
-    
+
     animalsdf = pd.DataFrame.from_dict(animals_dict,
                                        orient='index')
     print(animalsdf)
@@ -227,8 +229,6 @@ response = get_request(token, url)
 #print(convert_to_json(response))
 animals_json = parse_animals(convert_to_json(response))
 
-
-import plotly.express as px
 
 fig = px.bar(animals_json, x='type')
 # fig.write_html('genderChart.html') # export to HTML file
