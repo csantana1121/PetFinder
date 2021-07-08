@@ -217,7 +217,7 @@ def user_input():
                     test = False
             except KeyError:
                 break
-            option = input('Input valid address: ')
+            option = input('Input valid postal code: ')
             print(test)
         dict_inputs['location'] = option
         print_header('Edit Search Range? (Default 100 miles)')
