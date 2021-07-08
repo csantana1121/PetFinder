@@ -212,27 +212,42 @@ def user_input():
 # Takes Series, and displays values based on parameters and given format
 # paramList: List of keys in dataSeries
 #            If none inputed, will print all of them
+# labelList: List of desired labels to replace the given paramList, must be the
+#            same size as paramList. If None input, will print paramList as label
 # formList: List of desired formatting for specified values in same list location
-#           If none inputed will default to newlines
-def display_profile(dataSeries, paramList=None, formList=None):
-    # Reformat given lists so they fit requierments
+#           If None or wrong size, will replace with paramlist. If value is none, will
+#           not have header for that value
+def display_profile(dataSeries, paramList=None, labelList=None, formList=None):
     if (paramList is None):
         paramList = dataSeries.keys().to_list()
+    
+    # Fill formlist with enough values to match paramlist
     if (formList is None):
         formList = []
     formList = formList + ("\n " * (len(paramList)-len(formList))).split(" ")
-
+    
+    # Ensure label list won't throw errors
+    #if (labelList is None or len(labelList) != len(paramList)):
+    #    labelList = paramList
+    #    for i in range(0, len(paramList)):
+    #        labelList[i] = labelList[i] + ": "
+        
     for i in range(0, len(paramList)):
+        #print(f'{labelList[i]}', end='')
+        #if labelList[i] is not None:
+        #    print(f'{labelList[i]}', end='')
         print(f'{paramList[i]}: {dataSeries.get(paramList[i])}', end=formList[i])
+
 
 # Gets dataframe with animals and prints out information 
 def display_selected_animals(animalsdf):
     for index, animal in animalsdf.iterrows():
-        print(f'({index+1}) Animal')
+        print('({})'.format(index+1), end="\t")
         display_profile(animal,
-                        paramList = ["name", "type", "age", "gender"],
-                        formList = [" | ", " | ", " |  "])
-        
+                        paramList = ["type", "age", "gender", "name"],
+                        labelList = [None, None, None, "Name:"],
+                        formList = ["\t", "\t", "\t", "\n"])
+    
 # Gets dataframe with animals that may be selected
 def user_select_animals(animalsdf):
     option = len(animalsdf)
@@ -240,10 +255,27 @@ def user_select_animals(animalsdf):
         print("Here is a selection of animals based on your criteria")
         display_selected_animals(animalsdf)
         print(f'(0) Exit selection')
-        option = handle_option(input("Select an animal"))
-        while(not valid_input(option, range(1,len(animalsdf)+1))):
-            option = handle_option(input("Select an animal"))
+        option = handle_option(input("Select an animal:"))
+        
+        while(not valid_input(option, range(0,len(animalsdf)+1))):
+            option = handle_option(input("Select an animal:"))
+        if option == 0: 
+            return
         display_profile(animalsdf.iloc[option-1])
+                        #paramList = ["id", "type", 'age', 'gender', 'size',
+                        #             'name',
+                        #             'breed(primary)', 
+                        #             'color(primary)',
+                        #             'coat',
+                        #             'description',
+                        #             'status',
+                        #             'published_at',
+                        #             'contact(email)',
+                        #             'contact(phone)',
+                        #             'contact(address)',
+                        #             'contact(address)(country)'],
+                        #formList = ["\t", "\t", "\t", "\n"])
+                       #)
         input("press enter to continue back")
         
         
@@ -258,7 +290,7 @@ if __name__ == '__main__':
     Get_Animals = 'https://api.petfinder.com/v2/animals'
 
     token = get_token(API_key, API_secret)
-
+    
     # response = get_request(token, "https://api.petfinder.com/v2/types")
     # print(convert_to_json(response))
     
