@@ -208,9 +208,12 @@ def user_input():
                                  'https://api.petfinder.com/v2/animals'
                                  + '?location=' + option)
             code = convert_to_json(response)
-            if code['type'] != 'https://www.petfinder.com/developers/v2/docs/errors/ERR-00002/':
-                print(code[0]['type'])
-                test = False
+            try:
+                if code['type'] != 'https://www.petfinder.com/developers/v2/docs/errors/ERR-00002/':
+                    print(code['type'])
+                    test = False
+            except KeyError:
+                break
             option = input('Input valid address: ')
             print(test)
         dict_inputs['location'] = option
@@ -246,8 +249,8 @@ if __name__ == '__main__':
     output = user_input()
     url = build_url(output)
     response = get_request(token, url)
-    print(convert_to_json(response))
-    # animals_json = parse_animals(convert_to_json(response))
+    # print(convert_to_json(response))
+    animals_json = parse_animals(convert_to_json(response))
 
-    # fig = px.bar(animals_json, x='type')
+    fig = px.bar(animals_json, x='type')
     # fig.write_html('genderChart.html') # export to HTML file
