@@ -48,7 +48,7 @@ def parse_animals(animals_json):
 
     for animal in animals_json["animals"]:
         # Construct Address
-    
+
         # Add most general information
         animals_dict[count] = {
             'id': animal["id"],
