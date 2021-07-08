@@ -73,7 +73,13 @@ def parse_animals(animals_json):
         }
 
         # Add photos
-
+        try:
+            animals_dict[count]['photos'] = animal["primary_photo_cropped"]["medium"]
+            animals_dict[count]['video'] = animal['videos'][0]["embed"]
+        except TypeError:
+            animals_dict[count]['photos'] = None
+        except IndexError:
+            animals_dict[count]['video'] = None
         # 'photos(med)': animal["photos"][0]["medium"],
         # For now only get 1 photo
 
@@ -84,7 +90,8 @@ def parse_animals(animals_json):
 
     animalsdf = pd.DataFrame.from_dict(animals_dict,
                                        orient='index')
-    print(animalsdf)
+    print(animalsdf['photos'])
+    print(animalsdf['video'])
     return animalsdf
 
 
