@@ -209,6 +209,22 @@ def user_input():
     return dict_inputs
 
 
+# Takes Series, and displays values based on parameters and given format
+# paramList: List of keys in dataSeries
+#            If none inputed, will print all of them
+# formList: List of desired formatting for specified values in same list location
+#           If none inputed will default to newlines
+def display_profile(dataSeries, paramList=None, formList=None):
+    # Reformat given lists so they fit requierments
+    if (paramList is None):
+        paramList = dataSeries.keys().to_list()
+    if (formList is None):
+        formList = []
+    formList = formList + ("\n " * (len(paramList)-len(formList))).split(" ")
+
+    for i in range(0, len(paramList)):
+        print(f'{paramList[i]}: {dataSeries.get(paramList[i])}', end=formList[i])
+
 # Takes Series and list with desired traits to display animal breed age size
 def display_brief_profile(dataSeries, paramList):
     for i in range(0, len(paramList)):
@@ -223,12 +239,9 @@ def display_full_profile(dataSeries):
 def display_selected_animals(animalsdf):
     for index, animal in animalsdf.iterrows():
         print(f'Selection {index}')
-        #display_full_profile(animal)    
-        display_brief_profile(animal,['name','type','gender','age'])    
-        
-        print()
-    print(animalsdf)
-    
+        display_profile(animal,
+                        ['name', 'type', 'gender', 'age'],
+                        [" | ", " | ", " |  "])
 
 if __name__ == '__main__':
     API_key = 'xeEk5W9rJpZV68xsBdvtqf8pkQIg9m2a1dei0JajyGxir8Nh4o'
@@ -244,7 +257,7 @@ if __name__ == '__main__':
 
     # response = get_request(token, "https://api.petfinder.com/v2/types")
     # print(convert_to_json(response))
-
+    
     output = user_input()
     url = build_url(output)
     response = get_request(token, url)
