@@ -45,7 +45,6 @@ def parse_animals(animals_json):
     count = 0
 
     # check if it returns an empty values
-    
     for animal in animals_json["animals"]:
         # Construct Address
         
@@ -244,9 +243,9 @@ def display_selected_animals(animalsdf):
     for index, animal in animalsdf.iterrows():
         print('({})'.format(index+1), end="\t")
         display_profile(animal,
-                        paramList = ["type", "age", "gender", "name"],
-                        labelList = [None, None, None, "Name:"],
-                        formList = ["\t", "\t", "\t", "\n"])
+                        paramList=["type", "age", "gender", "name"],
+                        labelList=[None, None, None, "Name:"],
+                        formList=["\t", "\t", "\t", "\n"])
 
 
 # Gets dataframe with animals that may be selected
