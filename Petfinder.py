@@ -1,8 +1,7 @@
 import requests
 import pandas as pd
 import plotly.express as px
-
-
+from IPython.core.display import HTML
 # Location check using google api
 # error checks
 # handle if returns empty animals
@@ -27,6 +26,10 @@ def get_token(API_key, API_secret):
     })  # Access token request
 
     return response.json()['access_token']
+
+
+def path_to_image_html(path):
+    return '<img src="'+ path + '" width="60" >'
 
 
 def get_request(access_token, BASE_url):
@@ -261,6 +264,9 @@ if __name__ == '__main__':
     response = get_request(token, url)
     # print(convert_to_json(response))
     animals_json = parse_animals(convert_to_json(response))
-
-    fig = px.bar(animals_json, x='type')
+    
+    animals_json.to_html(escape=False, formatters=dict(photos=path_to_image_html))
+    HTML(animals_json.to_html(escape=False,formatters=dict(photos=path_to_image_html)))
+    animals_json.to_html('webpage.html',escape=False, formatters=dict(photos=path_to_image_html))
+    # fig = px.bar(animals_json, x='type')
     # fig.write_html('genderChart.html') # export to HTML file
