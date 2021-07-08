@@ -43,12 +43,12 @@ def parse_animals(animals_json):
     animalsdf = pd.DataFrame()
     animals_dict = {}
     count = 0
-
+    
     # check if it returns an empty values
-
+    
     for animal in animals_json["animals"]:
         # Construct Address
-
+        
         # Add most general information
         animals_dict[count] = {
             'id': animal["id"],
@@ -82,7 +82,6 @@ def parse_animals(animals_json):
 
     animalsdf = pd.DataFrame.from_dict(animals_dict,
                                        orient='index')
-    print(animalsdf)
     return animalsdf
 
 
@@ -210,6 +209,17 @@ def user_input():
     return dict_inputs
 
 
+# Gets dataframe with animals and prints out information 
+def display_selected_animals(animalsdf):
+    for index, animal in animalsdf.iterrows():
+        print(f'Selection {index}')
+        for label, attribute in animal.items():
+            print(f'{label}: {attribute}')
+            
+        print()
+    print(animalsdf)
+    
+
 if __name__ == '__main__':
     API_key = 'xeEk5W9rJpZV68xsBdvtqf8pkQIg9m2a1dei0JajyGxir8Nh4o'
     API_secret = '3jw6ujpIJ2BJni6XQNCUpBxvjdSFxm88FvFbhfZ2'
@@ -229,7 +239,10 @@ if __name__ == '__main__':
     url = build_url(output)
     response = get_request(token, url)
     # print(convert_to_json(response))
-    animals_json = parse_animals(convert_to_json(response))
+    animalsdf = parse_animals(convert_to_json(response))
 
-    fig = px.bar(animals_json, x='type')
+    fig = px.bar(animalsdf, x='type')
+    fig.show()
     # fig.write_html('genderChart.html') # export to HTML file
+    
+    display_selected_animals(animalsdf)
