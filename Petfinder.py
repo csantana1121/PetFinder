@@ -93,7 +93,7 @@ def parse_animals(animals_json):
 
     animalsdf = pd.DataFrame.from_dict(animals_dict,
                                        orient='index')
-    
+
     return animalsdf
 
 
@@ -334,7 +334,6 @@ if __name__ == '__main__':
     response = get_request(token, url)
     # print(convert_to_json(response))
     animalsdf = parse_animals(convert_to_json(response))
-
 
     animals_json.to_html(escape=False,
                          formatters=dict(photos=path_to_image_html))
