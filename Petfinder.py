@@ -209,6 +209,7 @@ def user_input():
 
     return dict_inputs
 
+
 if __name__ == '__main__':
     API_key = 'xeEk5W9rJpZV68xsBdvtqf8pkQIg9m2a1dei0JajyGxir8Nh4o'
     API_secret = '3jw6ujpIJ2BJni6XQNCUpBxvjdSFxm88FvFbhfZ2'
@@ -229,7 +230,6 @@ if __name__ == '__main__':
     response = get_request(token, url)
     # print(convert_to_json(response))
     animals_json = parse_animals(convert_to_json(response))
-
 
     fig = px.bar(animals_json, x='type')
     # fig.write_html('genderChart.html') # export to HTML file
