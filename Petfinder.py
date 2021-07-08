@@ -47,7 +47,7 @@ def parse_animals(animals_json):
     # check if it returns an empty values
     for animal in animals_json["animals"]:
         # Construct Address
-        
+
         # Add most general information
         animals_dict[count] = {
             'id': animal["id"],
@@ -235,7 +235,8 @@ def display_profile(dataSeries, paramList=None, labelList=None, formList=None):
         # print(f'{labelList[i]}', end='')
         # if labelList[i] is not None:
         #    print(f'{labelList[i]}', end='')
-        print(f'{paramList[i]}: {dataSeries.get(paramList[i])}', end=formList[i])
+        print(f'{paramList[i]}: {dataSeries.get(paramList[i])}',
+              end=formList[i])
 
 
 # Gets dataframe with animals and prints out information
@@ -275,7 +276,6 @@ def user_select_animals(animalsdf):
         #             'contact(address)',
         #             'contact(address)(country)'],
         # formList = ["\t", "\t", "\t", "\n"])
-        #)
         input("press enter to continue back")
 
 
