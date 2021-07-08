@@ -44,10 +44,10 @@ def parse_animals(animals_json):
     animals_dict = {}
     count = 0
 
-    #check if it returns an empty values
-    
+    # check if it returns an empty values
+
     for animal in animals_json["animals"]:
-        #Construct Address
+        # Construct Address
         
         # Add most general information
         animals_dict[count] = {
@@ -72,11 +72,12 @@ def parse_animals(animals_json):
 
         # Add photos
 
-        # 'photos(med)': animal["photos"][0]["medium"],   # For now only get 1 photo
+        # 'photos(med)': animal["photos"][0]["medium"],
+        # For now only get 1 photo
 
         # 'videos': animal["videos"][0]["embed"],   # For now only get 1 video
 
-            # there is more to address parsing,
+        # there is more to address parsing,
         count += 1
 
     animalsdf = pd.DataFrame.from_dict(animals_dict,
