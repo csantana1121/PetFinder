@@ -77,8 +77,8 @@ def parse_animals(animals_json):
 
         # Add photos
         try:
-            animals_dict[count]['photos'] = (
-            animal["primary_photo_cropped"]["medium"])
+            photomedium = animal["primary_photo_cropped"]["medium"]
+            animals_dict[count]['photos'] = photomedium
             animals_dict[count]['video'] = animal['videos'][0]["embed"]
         except TypeError:
             animals_dict[count]['photos'] = None
