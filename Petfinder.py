@@ -209,27 +209,27 @@ def user_input():
 
     return dict_inputs
 
+if __name__ == '__main__':
+    API_key = 'xeEk5W9rJpZV68xsBdvtqf8pkQIg9m2a1dei0JajyGxir8Nh4o'
+    API_secret = '3jw6ujpIJ2BJni6XQNCUpBxvjdSFxm88FvFbhfZ2'
 
-API_key = 'xeEk5W9rJpZV68xsBdvtqf8pkQIg9m2a1dei0JajyGxir8Nh4o'
-API_secret = '3jw6ujpIJ2BJni6XQNCUpBxvjdSFxm88FvFbhfZ2'
+    API_key2 = 'zJfcD6R6ADhwPimvTWthqhnv9zbA3JcHZCZwEToEUY7fq8BnsM'
+    API_secret2 = 'RGkqeThwQVMg3eoVWJK3fuJkXVxX1TTVdLIyFeS3'
 
-API_key2 = 'zJfcD6R6ADhwPimvTWthqhnv9zbA3JcHZCZwEToEUY7fq8BnsM'
-API_secret2 = 'RGkqeThwQVMg3eoVWJK3fuJkXVxX1TTVdLIyFeS3'
+    AUTH_URL = 'https://api.petfinder.com/v2/oauth2/token'
+    Get_Animals = 'https://api.petfinder.com/v2/animals'
 
-AUTH_URL = 'https://api.petfinder.com/v2/oauth2/token'
-Get_Animals = 'https://api.petfinder.com/v2/animals'
+    token = get_token(API_key, API_secret)
 
-token = get_token(API_key, API_secret)
+    # response = get_request(token, "https://api.petfinder.com/v2/types")
+    # print(convert_to_json(response))
 
-# response = get_request(token, "https://api.petfinder.com/v2/types")
-# print(convert_to_json(response))
-
-output = user_input()
-url = build_url(output)
-response = get_request(token, url)
-# print(convert_to_json(response))
-animals_json = parse_animals(convert_to_json(response))
+    output = user_input()
+    url = build_url(output)
+    response = get_request(token, url)
+    # print(convert_to_json(response))
+    animals_json = parse_animals(convert_to_json(response))
 
 
-fig = px.bar(animals_json, x='type')
-# fig.write_html('genderChart.html') # export to HTML file
+    fig = px.bar(animals_json, x='type')
+    # fig.write_html('genderChart.html') # export to HTML file
