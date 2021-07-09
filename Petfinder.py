@@ -75,7 +75,7 @@ def parse_animals(animals_json):
             if (line is not None):
                 address_text += line + " "
         animals_dict[count]['contact(address)'] = address_text
-                
+
         # Add photos and videos
         try:
             photomedium = animal["primary_photo_cropped"]["medium"]
@@ -312,9 +312,9 @@ def user_select_animals(animalsdf):
                                    "photo", "video",
                                    "description",
                                    "contact(address)",
-                                   "contact(email)","contact(phone)",
+                                   "contact(email)", "contact(phone)",
                                    "published_at"],
-                        labelList=["ID:_","Name: ", "Type: ", "(", "~ ",
+                        labelList=["ID:_", "Name: ", "Type: ", "(", "~ ",
                                    "~ ",
                                    "~ ", "Breed: ", "Coat: ",
                                    "Adoption Status: ",
@@ -330,7 +330,7 @@ def user_select_animals(animalsdf):
                                   "\n", "\n\n",
                                   "\n\n",
                                   "\n",
-                                  "\n","\n\n",
+                                  "\n", "\n\n",
                                   ""]
                        )
         print_header("                             ")
