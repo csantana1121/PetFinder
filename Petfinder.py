@@ -2,9 +2,6 @@ import requests
 import pandas as pd
 import plotly.express as px
 from IPython.core.display import HTML
-# Location check using google api
-# error checks
-# handle if returns empty animals
 
 
 # CONSANTS
@@ -13,9 +10,12 @@ ANIMAL_TYPES_LIST = [None, 'Dog', 'Cat', 'Rabbit', 'Small-Furry', 'Horse',
 ANIMAL_GENDERS_LIST = [None, 'Male', 'Female']
 ANIMAL_AGE_LIST = [None, 'Baby', 'Young', 'Adult', 'Senior']
 ANIMAL_SIZE_LIST = [None, 'Small', 'Medium', 'Large', 'Xlarge']
-LOCATION_OPTIONS = ['No', 'Yes']
+YES_NO_OPTION = ['No', 'Yes']
+
 API_key = 'xeEk5W9rJpZV68xsBdvtqf8pkQIg9m2a1dei0JajyGxir8Nh4o'
 API_secret = '3jw6ujpIJ2BJni6XQNCUpBxvjdSFxm88FvFbhfZ2'
+API_key2 = 'zJfcD6R6ADhwPimvTWthqhnv9zbA3JcHZCZwEToEUY7fq8BnsM'
+API_secret2 = 'RGkqeThwQVMg3eoVWJK3fuJkXVxX1TTVdLIyFeS3'
 
 
 def get_token(API_key, API_secret):
@@ -24,7 +24,6 @@ def get_token(API_key, API_secret):
         'client_id': API_key,
         'client_secret': API_secret,
     })  # Access token request
-
     return response.json()['access_token']
 
 
@@ -43,16 +42,14 @@ def convert_to_json(response):
 
 
 # Parses through the animals json to get desired information
-# Return dataframe
+# return: dataframe animalsdf
 def parse_animals(animals_json):
     animalsdf = pd.DataFrame()
     animals_dict = {}
     count = 0
 
-    # check if it returns an empty values
     for animal in animals_json["animals"]:
-
-        # Add most general information
+        # Add info
         animals_dict[count] = {
             'id': animal["id"],
             'type': animal["type"],
@@ -70,13 +67,14 @@ def parse_animals(animals_json):
             'contact(phone)': animal["contact"]["phone"],
         }
 
+        # Add address
         address_text = ""
         for line in animal["contact"]["address"].values():
             if (line is not None):
                 address_text += line + " "
         animals_dict[count]['contact(address)'] = address_text
 
-        # Add photos and videos
+        # Add photo and video
         try:
             photomedium = animal["primary_photo_cropped"]["medium"]
             animals_dict[count]['photos'] = photomedium
@@ -85,24 +83,19 @@ def parse_animals(animals_json):
             animals_dict[count]['photos'] = None
         except IndexError:
             animals_dict[count]['video'] = None
+
+        #Add to counter
         count += 1
 
     animalsdf = pd.DataFrame.from_dict(animals_dict,
                                        orient='index')
-
     return animalsdf
 
 
-# Function goes through list of search paramaters to get appropriate animal
-def search_values(list_of_values):
-    return
-
-
-def give_location():
-    return
-
-
-# Check to make sure user is inputing the correct values
+# Ensure input values are valid
+# param    user_response: input from user
+#       valid_types_list: list of valid responses
+# return : True if valid, false if not 
 def valid_input(user_response, valid_types_list):
     for valid_type in valid_types_list:
         if (user_response == valid_type):
@@ -110,6 +103,7 @@ def valid_input(user_response, valid_types_list):
     return False
 
 
+# Format text to look like header
 def print_header(title):
     print(f'\n{title}')
     print('-' * len(title))
@@ -137,75 +131,70 @@ def handle_option(option):
         return -1
 
 
-# Send a get request to API with the filters the user requests
+# Builds url that will be a get request to API for animals,
+# with the filters the user requests
 def build_url(dict_inputs):
-    Get_Animals = 'https://api.petfinder.com/v2/animals'
     url = "https://api.petfinder.com/v2/animals?"
-    No_preference = True
+    no_preference = True
     for key, value in dict_inputs.items():
         if value is not None:
-            No_preference = False
+            no_preference = False
             url += f'{key}={value}&'
     url = url[:-1]
-    print(url)
-    if No_preference:
-        return Get_Animals
+    
+    if no_preference:
+        return 'https://api.petfinder.com/v2/animals'
     else:
         return url
 
 
-# Function will handle user input prompts and structure stuff
+# Request for input loop until a valid value is passed
+# Param menu_options: List of options user will choose
+#        request_msg: string of message posted when asking for input
+#        min_menu_op: int, optional paramto modify the lower range of values
+# return: input of user
+def loop_input_menu(menu_options,request_msg, min_menu_op=0):
+    menu(menu_options)
+    option = handle_option(input(request_msg))
+    
+    while(not valid_input(option, range(min_menu_op, len(menu_options)))):
+        menu(menu_options)
+        option = handle_option(input(request_msg))
+        
+    return option
+
+
+# Handles user input to find animal search preferences
 def user_input():
     dict_inputs = {}
 
-    # Request animal_type
-    print_header('Available Animals for adoption')
-    menu(ANIMAL_TYPES_LIST)
-    option = handle_option(input('Animal preference: '))
-
-    while(not valid_input(option, range(0, len(ANIMAL_TYPES_LIST)))):
-        menu(ANIMAL_TYPES_LIST)
-        option = handle_option(input('Animal preference: '))
+    # Request animal type
+    print_header('Available Animals For Adoption')
+    option = loop_input_menu(ANIMAL_TYPES_LIST,
+                             'Animal preference: ')
     dict_inputs['type'] = ANIMAL_TYPES_LIST[option]
 
+    # Request gender
     print_header('Gender options')
-    menu(ANIMAL_GENDERS_LIST)
-    option = handle_option(input('Gender preference: '))
-    while(not valid_input(option, range(0, len(ANIMAL_GENDERS_LIST)))):
-        menu(ANIMAL_GENDERS_LIST)
-        option = handle_option(input('Gender preference: '))
+    option = loop_input_menu(ANIMAL_GENDERS_LIST,
+                             'Gender preference: ')
     dict_inputs['gender'] = ANIMAL_GENDERS_LIST[option]
 
+    # Request Age
     print_header('Age Ranges')
-    menu(ANIMAL_AGE_LIST)
-    option = handle_option(input('Age preference: '))
-    while(not valid_input(option, range(0, len(ANIMAL_AGE_LIST)))):
-        menu(ANIMAL_AGE_LIST)
-        option = handle_option(input('Age preference: '))
+    option = loop_input_menu(ANIMAL_AGE_LIST,
+                             'Age preference: ')
     dict_inputs['age'] = ANIMAL_AGE_LIST[option]
 
+    # Request Size
     print_header('Animal Size')
-    menu(ANIMAL_SIZE_LIST)
-    option = handle_option(input('Size preference: '))
-    while(not valid_input(option, range(0, len(ANIMAL_SIZE_LIST)))):
-        menu(ANIMAL_SIZE_LIST)
-        option = handle_option(input('Size preference: '))
+    option = loop_input_menu(ANIMAL_SIZE_LIST,
+                             'Size preference: ')
     dict_inputs['size'] = ANIMAL_SIZE_LIST[option]
-    # Request gender
-    # age
-    # size
-
-    # Location Function
-    # location = give_location()
-    # if (location != None):
-    #    return
-    #    add to search paramaters?
+    
+    # Request Location and Distance
     print_header('Would you like to give a location')
-    menu(LOCATION_OPTIONS)
-    option = handle_option(input('Choice: '))
-    while(not valid_input(option, range(0, len(LOCATION_OPTIONS)))):
-        menu(LOCATION_OPTIONS)
-        option = handle_option(input('Choice: '))
+    option = loop_input_menu(YES_NO_OPTION, 'Choice: ')
     if option == 1:
         test = True
         error = ('https://www.petfinder.com/developers/v2/docs/errors/' +
@@ -223,14 +212,11 @@ def user_input():
             except KeyError:
                 break
             option = input('Input valid postal code: ')
-            print(test)
         dict_inputs['location'] = option
+        
         print_header('Edit Search Range? (Default 100 miles)')
-        menu(LOCATION_OPTIONS)
-        option = handle_option(input('Choice: '))
-        while(not valid_input(option, range(0, len(LOCATION_OPTIONS)))):
-            menu(LOCATION_OPTIONS)
-            option = handle_option(input('Choice: '))
+        option = loop_input_menu(YES_NO_OPTION, 'Choice: ')
+            
         if option == 1:
             print_header('Search range in miles(max 500 miles): ')
             option = handle_option(input('Range in miles(max 500 miles): '))
@@ -239,12 +225,10 @@ def user_input():
                                              '(max 500 miles): '))
             dict_inputs['distance'] = option
 
-    print_header('Would you like to edit the number of results?(default:20)')
-    menu(LOCATION_OPTIONS)
-    option = handle_option(input('Choice: '))
-    while(not valid_input(option, range(0, len(LOCATION_OPTIONS)))):
-        menu(LOCATION_OPTIONS)
-        option = handle_option(input('Choice: '))
+    # Request Max search results to show
+    print_header('Would you like to edit the number of results? (default:20)')
+    option = loop_input_menu(YES_NO_OPTION, 'Choice: ')
+
     if option == 1:
         print_header('Enter max number of search results you would like' +
                      '(max 100): ')
@@ -285,6 +269,7 @@ def display_profile(dataSeries, paramList=None, labelList=None, formList=None):
         while (len(labelList) < len(paramList)):
             labelList.append(paramList[len(labelList)] + ": ")
 
+    # Print based on specified parameters
     for i in range(0, len(paramList)):
         if labelList[i] is not None:
             print(f'{labelList[i]}', end='')
@@ -354,24 +339,16 @@ def user_select_animals(animalsdf):
 
 
 if __name__ == '__main__':
-
-    API_key2 = 'zJfcD6R6ADhwPimvTWthqhnv9zbA3JcHZCZwEToEUY7fq8BnsM'
-    API_secret2 = 'RGkqeThwQVMg3eoVWJK3fuJkXVxX1TTVdLIyFeS3'
-
     AUTH_URL = 'https://api.petfinder.com/v2/oauth2/token'
-    Get_Animals = 'https://api.petfinder.com/v2/animals'
-
     token = get_token(API_key, API_secret)
 
-    # response = get_request(token, "https://api.petfinder.com/v2/types")
-    # print(convert_to_json(response))
-
+    # Process user request for animals
     output = user_input()
     url = build_url(output)
     response = get_request(token, url)
-    # print(convert_to_json(response))
     animalsdf = parse_animals(convert_to_json(response))
 
+    # Handle html webpage
     animalsdf.to_html(escape=False,
                       formatters=dict(photos=path_to_image_html))
     HTML(animalsdf.to_html(escape=False,
@@ -379,4 +356,5 @@ if __name__ == '__main__':
     animalsdf.to_html('webpage.html', escape=False,
                       formatters=dict(photos=path_to_image_html))
 
+    # Terminal visulaization of animals
     user_select_animals(animalsdf)
