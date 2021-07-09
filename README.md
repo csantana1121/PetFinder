@@ -39,6 +39,8 @@ The web display is currently in development and a fully functional finalized ver
 
 ![Web-dispay](https://github.com/csantana1121/PetFinder/blob/master/data/images/Petfinderhtml.jpg?raw=true)
 > Currently all information is displayed at once and the page is not properly formatted to display 1 animal's information neatly
+
+You can find a sample html page on our [github-pages site](https://csantana1121.github.io/PetFinder/webpage.html)
 ## Contributors
 This project was developed and built by [Christian Santana](https://github.com/csantana1121) and [Anthony Meza](https://github.com/abmeza) in python within the Codio studio. Please reach out if you have questions or concerns!
 ## License
