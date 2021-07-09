@@ -153,7 +153,7 @@ def build_url(dict_inputs):
 #        request_msg: string of message posted when asking for input
 #        min_menu_op: int, optional paramto modify the lower range of values
 # return: input of user
-def loop_input_menu(menu_options,request_msg, min_menu_op=0):
+def loop_input_menu(menu_options, request_msg, min_menu_op=0):
     menu(menu_options)
     option = handle_option(input(request_msg))
 
