@@ -51,7 +51,6 @@ def parse_animals(animals_json):
 
     # check if it returns an empty values
     for animal in animals_json["animals"]:
-        # Construct Address
 
         # Add most general information
         animals_dict[count] = {
@@ -69,12 +68,15 @@ def parse_animals(animals_json):
             'published_at': animal["published_at"],
             'contact(email)': animal["contact"]["email"],
             'contact(phone)': animal["contact"]["phone"],
-            'contact(address)': animal["contact"]["address"]["address1"],
-            'contact(address)(country)':
-            animal["contact"]["address"]["country"]
         }
 
-        # Add photos
+        address_text = ""
+        for line in animal["contact"]["address"].values():
+            if (line is not None):
+                address_text += line + " "
+        animals_dict[count]['contact(address)'] = address_text
+
+        # Add photos and videos
         try:
             photomedium = animal["primary_photo_cropped"]["medium"]
             animals_dict[count]['photos'] = photomedium
@@ -83,12 +85,6 @@ def parse_animals(animals_json):
             animals_dict[count]['photos'] = None
         except IndexError:
             animals_dict[count]['video'] = None
-        # 'photos(med)': animal["photos"][0]["medium"],
-        # For now only get 1 photo
-
-        # 'videos': animal["videos"][0]["embed"],   # For now only get 1 video
-
-        # there is more to address parsing,
         count += 1
 
     animalsdf = pd.DataFrame.from_dict(animals_dict,
@@ -246,13 +242,14 @@ def user_input():
 
 
 # Takes Series, and displays values based on parameters and given format
+# labelList and formList should be the same size as paramList and should align
+# with parameter it is highlighting, otherwise function will use default format
 # paramList: List of keys in dataSeries
 #            If none inputed, will print all of them
-# labelList: List of desired labels to replace the given paramList, must be the
-#            same size as paramList. If None input, label will param
-# formList: List of desired formatting for specified values in same location
-#           If None or wrong size, will replace with paramlist.
-#           If value is none, will not have header for that value
+# labelList: List of desired labels, is what is printed before parameter
+#            If None is default is paramList
+# formList: List of desired formatting, is what is printed after parameter
+#           If None, default is newline
 def display_profile(dataSeries, paramList=None, labelList=None, formList=None):
     if (paramList is None):
         paramList = dataSeries.keys().to_list()
@@ -262,18 +259,19 @@ def display_profile(dataSeries, paramList=None, labelList=None, formList=None):
         formList = []
     formList = formList + ("\n " * (len(paramList)-len(formList))).split(" ")
 
-    # Ensure label list won't throw errors
-    # if (labelList is None or len(labelList) != len(paramList)):
-    #    labelList = paramList
-    #    for i in range(0, len(paramList)):
-    #        labelList[i] = labelList[i] + ": "
+    # Ensure labelList is appropriate size by filling with values as needed
+    if (labelList is None):
+        labelList = paramList.copy()
+        for i in range(0, len(paramList)):
+            labelList[i] = labelList[i] + ": "
+    elif len(labelList) < len(paramList):
+        while (len(labelList) < len(paramList)):
+            labelList.append(paramList[len(labelList)] + ": ")
 
     for i in range(0, len(paramList)):
-        # print(f'{labelList[i]}', end='')
-        # if labelList[i] is not None:
-        #    print(f'{labelList[i]}', end='')
-        print(f'{paramList[i]}: {dataSeries.get(paramList[i])}',
-              end=formList[i])
+        if labelList[i] is not None:
+            print(f'{labelList[i]}', end='')
+        print(f'{dataSeries.get(paramList[i])}', end=formList[i])
 
 
 # Gets dataframe with animals and prints out information
@@ -282,38 +280,60 @@ def display_selected_animals(animalsdf):
         print('({})'.format(index+1), end="\t")
         display_profile(animal,
                         paramList=["type", "age", "gender", "name"],
-                        labelList=[None, None, None, "Name:"],
-                        formList=["\t", "\t", "\t", "\n"])
+                        labelList=[None, None, None, "Name: "],
+                        formList=["\t", " ", "\t", "\n"])
 
 
 # Gets dataframe with animals that may be selected
 def user_select_animals(animalsdf):
+    print("Based on your search criteria this is what we could find: \n")
     option = len(animalsdf)
+    if (option == 0):
+        print("_NONE_\nNo pets in the area based on your criteria")
+
     while(not (option == 0)):
-        print("Here is a selection of animals based on your criteria")
+        print_header(" List of Animals Found ")
         display_selected_animals(animalsdf)
         print(f'(0) Exit selection')
-        option = handle_option(input("Select an animal:"))
 
+        option = handle_option(input("Select an animal:"))
         while(not valid_input(option, range(0, len(animalsdf)+1))):
             option = handle_option(input("Select an animal:"))
         if option == 0:
             return
-        display_profile(animalsdf.iloc[option-1])
-        # paramList = ["id", "type", 'age', 'gender', 'size',
-        #             'name',
-        #             'breed(primary)',
-        #             'color(primary)',
-        #             'coat',
-        #             'description',
-        #             'status',
-        #             'published_at',
-        #             'contact(email)',
-        #             'contact(phone)',
-        #             'contact(address)',
-        #             'contact(address)(country)'],
-        # formList = ["\t", "\t", "\t", "\n"])
-        input("press enter to continue back")
+
+        # Full animal profile display
+        print_header("     Full Animal Profile     ")
+        display_profile(animalsdf.iloc[option-1],
+                        paramList=["id", "name", "type", "age", "gender",
+                                   "size",
+                                   "color(primary)", "breed", "coat",
+                                   "status",
+                                   "photo", "video",
+                                   "description",
+                                   "contact(address)",
+                                   "contact(email)", "contact(phone)",
+                                   "published_at"],
+                        labelList=["ID:_", "Name: ", "Type: ", "(", "~ ",
+                                   "~ ",
+                                   "~ ", "Breed: ", "Coat: ",
+                                   "Adoption Status: ",
+                                   "Photo Link:", "Video Link:",
+                                   "Description:\n",
+                                   "_Contact Information_\nAddress: ",
+                                   "Email: ", "Phone: ",
+                                   "Published on site at: "],
+                        formList=["_\n", "\n", " ", " ", " ",
+                                  " ",
+                                  ")\n", "\n", "\n",
+                                  "\n\n",
+                                  "\n", "\n\n",
+                                  "\n\n",
+                                  "\n",
+                                  "\n", "\n\n",
+                                  ""])
+        print_header("                             ")
+        input("Press Enter to return to Select Screen: ")
 
 
 if __name__ == '__main__':
@@ -336,10 +356,10 @@ if __name__ == '__main__':
     animalsdf = parse_animals(convert_to_json(response))
 
     animalsdf.to_html(escape=False,
-                         formatters=dict(photos=path_to_image_html))
+                      formatters=dict(photos=path_to_image_html))
     HTML(animalsdf.to_html(escape=False,
-                              formatters=dict(photos=path_to_image_html)))
+                           formatters=dict(photos=path_to_image_html)))
     animalsdf.to_html('webpage.html', escape=False,
-                         formatters=dict(photos=path_to_image_html))
+                      formatters=dict(photos=path_to_image_html))
 
     user_select_animals(animalsdf)
