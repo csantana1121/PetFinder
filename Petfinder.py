@@ -290,18 +290,18 @@ def user_select_animals(animalsdf):
     option = len(animalsdf)
     if (option == 0):
         print("_NONE_\nNo pets in the area based on your criteria")
-    
+
     while(not (option == 0)):
         print_header(" List of Animals Found ")
         display_selected_animals(animalsdf)
         print(f'(0) Exit selection')
-        
+
         option = handle_option(input("Select an animal:"))
         while(not valid_input(option, range(0, len(animalsdf)+1))):
             option = handle_option(input("Select an animal:"))
         if option == 0:
             return
-        
+
         # Full animal profile display
         print_header("     Full Animal Profile     ")
         display_profile(animalsdf.iloc[option-1],
@@ -354,7 +354,7 @@ if __name__ == '__main__':
     response = get_request(token, url)
     # print(convert_to_json(response))
     animalsdf = parse_animals(convert_to_json(response))
-    
+
     animalsdf.to_html(escape=False,
                       formatters=dict(photos=path_to_image_html))
     HTML(animalsdf.to_html(escape=False,
