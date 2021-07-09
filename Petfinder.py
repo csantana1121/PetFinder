@@ -68,11 +68,14 @@ def parse_animals(animals_json):
             'published_at': animal["published_at"],
             'contact(email)': animal["contact"]["email"],
             'contact(phone)': animal["contact"]["phone"],
-            'contact(address)': animal["contact"]["address"]["address1"],
-            'contact(address)(country)':
-            animal["contact"]["address"]["country"]
         }
 
+        address_text = ""
+        for line in animal["contact"]["address"].values():
+            if (not line is None):
+                address_text += line + " "
+        animals_dict[count]['contact(address)'] = address_text
+                
         # Add photos and videos
         try:
             photomedium = animal["primary_photo_cropped"]["medium"]
