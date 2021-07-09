@@ -286,17 +286,23 @@ def display_selected_animals(animalsdf):
 
 # Gets dataframe with animals that may be selected
 def user_select_animals(animalsdf):
+    print("Based on your search criteria this is what we could find: \n")
     option = len(animalsdf)
+    if (option == 0):
+        print("_NONE_\nNo pets in the area based on your criteria")
+    
     while(not (option == 0)):
-        print("Here is a selection of animals based on your criteria")
+        print_header(" List of Animals Found ")
         display_selected_animals(animalsdf)
         print(f'(0) Exit selection')
+        
         option = handle_option(input("Select an animal:"))
-
         while(not valid_input(option, range(0, len(animalsdf)+1))):
             option = handle_option(input("Select an animal:"))
         if option == 0:
             return
+        
+        # Full animal profile display
         print_header("     Full Animal Profile     ")
         display_profile(animalsdf.iloc[option-1],
                         paramList=["id","name", "type", "age", "gender", "size",
@@ -353,5 +359,5 @@ if __name__ == '__main__':
                               formatters=dict(photos=path_to_image_html)))
     animalsdf.to_html('webpage.html', escape=False,
                          formatters=dict(photos=path_to_image_html))
-
+    
     user_select_animals(animalsdf)
