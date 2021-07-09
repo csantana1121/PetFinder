@@ -84,7 +84,7 @@ def parse_animals(animals_json):
         except IndexError:
             animals_dict[count]['video'] = None
 
-        #Add to counter
+        # Add to counter
         count += 1
 
     animalsdf = pd.DataFrame.from_dict(animals_dict,
@@ -95,7 +95,7 @@ def parse_animals(animals_json):
 # Ensure input values are valid
 # param    user_response: input from user
 #       valid_types_list: list of valid responses
-# return : True if valid, false if not 
+# return : True if valid, false if not
 def valid_input(user_response, valid_types_list):
     for valid_type in valid_types_list:
         if (user_response == valid_type):
@@ -141,7 +141,7 @@ def build_url(dict_inputs):
             no_preference = False
             url += f'{key}={value}&'
     url = url[:-1]
-    
+
     if no_preference:
         return 'https://api.petfinder.com/v2/animals'
     else:
@@ -156,11 +156,11 @@ def build_url(dict_inputs):
 def loop_input_menu(menu_options,request_msg, min_menu_op=0):
     menu(menu_options)
     option = handle_option(input(request_msg))
-    
+
     while(not valid_input(option, range(min_menu_op, len(menu_options)))):
         menu(menu_options)
         option = handle_option(input(request_msg))
-        
+
     return option
 
 
@@ -191,7 +191,7 @@ def user_input():
     option = loop_input_menu(ANIMAL_SIZE_LIST,
                              'Size preference: ')
     dict_inputs['size'] = ANIMAL_SIZE_LIST[option]
-    
+
     # Request Location and Distance
     print_header('Would you like to give a location')
     option = loop_input_menu(YES_NO_OPTION, 'Choice: ')
@@ -213,10 +213,10 @@ def user_input():
                 break
             option = input('Input valid postal code: ')
         dict_inputs['location'] = option
-        
+
         print_header('Edit Search Range? (Default 100 miles)')
         option = loop_input_menu(YES_NO_OPTION, 'Choice: ')
-            
+
         if option == 1:
             print_header('Search range in miles(max 500 miles): ')
             option = handle_option(input('Range in miles(max 500 miles): '))
