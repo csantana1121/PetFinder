@@ -267,7 +267,7 @@ def display_profile(dataSeries, paramList=None, labelList=None, formList=None):
     elif len(labelList) < len(paramList):
         while (len(labelList) < len(paramList)):
             labelList.append(paramList[len(labelList)] + ": ")
-    
+
     for i in range(0, len(paramList)):
         if labelList[i] is not None:
             print(f'{labelList[i]}', end='')
@@ -331,8 +331,7 @@ def user_select_animals(animalsdf):
                                   "\n\n",
                                   "\n",
                                   "\n", "\n\n",
-                                  ""]
-                       )
+                                  ""])
         print_header("                             ")
         input("Press Enter to return to Select Screen: ")
 
