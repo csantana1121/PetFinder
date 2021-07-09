@@ -335,11 +335,11 @@ if __name__ == '__main__':
     # print(convert_to_json(response))
     animalsdf = parse_animals(convert_to_json(response))
 
-    animals_json.to_html(escape=False,
+    animalsdf.to_html(escape=False,
                          formatters=dict(photos=path_to_image_html))
-    HTML(animals_json.to_html(escape=False,
+    HTML(animalsdf.to_html(escape=False,
                               formatters=dict(photos=path_to_image_html)))
-    animals_json.to_html('webpage.html', escape=False,
+    animalsdf.to_html('webpage.html', escape=False,
                          formatters=dict(photos=path_to_image_html))
 
     user_select_animals(animalsdf)
