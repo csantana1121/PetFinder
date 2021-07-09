@@ -232,11 +232,28 @@ def user_input():
             menu(LOCATION_OPTIONS)
             option = handle_option(input('Choice: '))
         if option == 1:
-            print_header('Search range(in miles): ')
-            option = handle_option(input('Range(in miles): '))
+            print_header('Search range in miles(max 500 miles): ')
+            option = handle_option(input('Range in miles(max 500 miles): '))
             while(not valid_input(option, range(1, 501))):
-                option = handle_option(input('Range(in miles): '))
+                option = handle_option(input('Range in miles' +
+                                             '(max 500 miles): '))
             dict_inputs['distance'] = option
+
+    print_header('Would you like to edit the number of results?(default:20)')
+    menu(LOCATION_OPTIONS)
+    option = handle_option(input('Choice: '))
+    while(not valid_input(option, range(0, len(LOCATION_OPTIONS)))):
+        menu(LOCATION_OPTIONS)
+        option = handle_option(input('Choice: '))
+    if option == 1:
+        print_header('Enter max number of search results you would like' +
+                     '(max 100): ')
+        option = handle_option(input('Number of returned search' +
+                                     'results(max 100): '))
+        while(not valid_input(option, range(1, 101))):
+            option = handle_option(input('Number of returned search' +
+                                         'results(max 100): '))
+        dict_inputs['limit'] = option
 
     return dict_inputs
 
