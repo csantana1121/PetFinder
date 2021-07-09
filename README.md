@@ -20,7 +20,9 @@ Clone this repo and navigate to its directory via the command line/terminal. Onc
 python3 Petfinder.py
 ```
 Upon doing so your program will start the interactive commandline interface requesting if you have any preferences for the adoptable animals you see. Asking for preferences on animal type, gender, age, size, location, search range, and the max number of search results you'd like to see. The interface will like so allowing for the user to select from a list of options.
+
 ![Available Animals](https://github.com/csantana1121/PetFinder/blob/master/data/images/Petfinderstartup.jpg?raw=true)
+
 > Note: For location, search range, and max number of search results you will have to input your own value which will be validated by the program as a valid input. Valid inputs > will be made clear at each step. Like so
 > 
 ![Location](https://github.com/csantana1121/PetFinder/blob/master/data/images/Petfinderpostalcode.jpg?raw=true)
