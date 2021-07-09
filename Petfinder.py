@@ -51,7 +51,7 @@ def parse_animals(animals_json):
 
     # check if it returns an empty values
     for animal in animals_json["animals"]:
-        
+
         # Add most general information
         animals_dict[count] = {
             'id': animal["id"],
@@ -72,7 +72,7 @@ def parse_animals(animals_json):
 
         address_text = ""
         for line in animal["contact"]["address"].values():
-            if (not line is None):
+            if (line is not None):
                 address_text += line + " "
         animals_dict[count]['contact(address)'] = address_text
                 
@@ -280,7 +280,7 @@ def display_selected_animals(animalsdf):
         print('({})'.format(index+1), end="\t")
         display_profile(animal,
                         paramList=["type", "age", "gender", "name"],
-                        labelList=[ None, None, None, "Name: "],
+                        labelList=[None, None, None, "Name: "],
                         formList=["\t", " ", "\t", "\n"])
 
 
@@ -305,7 +305,8 @@ def user_select_animals(animalsdf):
         # Full animal profile display
         print_header("     Full Animal Profile     ")
         display_profile(animalsdf.iloc[option-1],
-                        paramList=["id","name", "type", "age", "gender", "size",
+                        paramList=["id", "name", "type", "age", "gender",
+                                   "size",
                                    "color(primary)", "breed", "coat",
                                    "status",
                                    "photo", "video",
@@ -313,7 +314,8 @@ def user_select_animals(animalsdf):
                                    "contact(address)",
                                    "contact(email)","contact(phone)",
                                    "published_at"],
-                        labelList=["ID:_","Name: ", "Type: ", "(", "~ ", "~ ",
+                        labelList=["ID:_","Name: ", "Type: ", "(", "~ ",
+                                   "~ ",
                                    "~ ", "Breed: ", "Coat: ",
                                    "Adoption Status: ",
                                    "Photo Link:", "Video Link:",
@@ -321,14 +323,15 @@ def user_select_animals(animalsdf):
                                    "_Contact Information_\nAddress: ",
                                    "Email: ", "Phone: ",
                                    "Published on site at: "],
-                        formList=["_\n", "\n", " ", " ", " ", " ",
+                        formList=["_\n", "\n", " ", " ", " ",
+                                  " ",
                                   ")\n", "\n", "\n",
                                   "\n\n",
                                   "\n", "\n\n",
                                   "\n\n",
                                   "\n",
-                                  "\n","\n\n"
-                                  ,""]
+                                  "\n","\n\n",
+                                  ""]
                        )
         print_header("                             ")
         input("Press Enter to return to Select Screen: ")
@@ -352,12 +355,12 @@ if __name__ == '__main__':
     response = get_request(token, url)
     # print(convert_to_json(response))
     animalsdf = parse_animals(convert_to_json(response))
-
-    animalsdf.to_html(escape=False,
-                         formatters=dict(photos=path_to_image_html))
-    HTML(animalsdf.to_html(escape=False,
-                              formatters=dict(photos=path_to_image_html)))
-    animalsdf.to_html('webpage.html', escape=False,
-                         formatters=dict(photos=path_to_image_html))
     
+    animalsdf.to_html(escape=False,
+                      formatters=dict(photos=path_to_image_html))
+    HTML(animalsdf.to_html(escape=False,
+                           formatters=dict(photos=path_to_image_html)))
+    animalsdf.to_html('webpage.html', escape=False,
+                      formatters=dict(photos=path_to_image_html))
+
     user_select_animals(animalsdf)
